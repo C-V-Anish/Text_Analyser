@@ -31,8 +31,8 @@ def analyse(request):
         return render(request,'analyse.html',params)
     elif spaceremove =="on":
         analysed=""
-        for char in djtext:
-            if char!=" ":
+        for index,char in enumerate(djtext):
+            if not(djtext[index]==" " and djtext[index+1]==" 00"):
                 analysed=analysed+char;
         params={'purpose' : 'Removes Blankspace' , 'analysed_text': analysed}
         return render(request,'analyse.html',params)
