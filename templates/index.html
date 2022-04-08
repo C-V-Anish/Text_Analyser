@@ -69,7 +69,8 @@
 </nav><br>
 <h4 style="margin-left: 15px">Enter your text.</h4>
 <div style="margin-left: 15px">
-  <form action='/analyse' method='get'>
+  <form action='/analyse' method='post'>
+    {% csrf_token %}
     <textarea name='text' style="height: 250px; width: 800px"></textarea>
   <br>
     <input type="checkbox" name="removepunc">Remove Punctuations<br><br>

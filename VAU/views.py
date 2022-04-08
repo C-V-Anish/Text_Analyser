@@ -9,12 +9,12 @@ def index(request):
 
 
 def analyse(request):
-    djtext = request.GET.get('text', 'default')
-    removepunc = request.GET.get('removepunc', 'off')
-    capitalise = request.GET.get('capitalise', 'off')
-    spaceremove = request.GET.get('spaceremove', 'off')
-    charcount = request.GET.get('charcount', 'off')
-    newlineremover = request.GET.get('newlineremover', 'off')
+    djtext = request.POST.get('text', 'default')
+    removepunc = request.POST.get('removepunc', 'off')
+    capitalise = request.POST.get('capitalise', 'off')
+    spaceremove = request.POST.get('spaceremove', 'off')
+    charcount = request.POST.get('charcount', 'off')
+    newlineremover = request.POST.get('newlineremover', 'off')
     if removepunc == "on":
         punctuations = '''!@#$%^&*()_[{}]\|;':",./<>?`~'''
         analysed=""
@@ -22,28 +22,32 @@ def analyse(request):
             if char not in punctuations:
                 analysed=analysed+char
         params={'purpose' : 'Removed Punctuations' , 'analysed_text': analysed}
-        return render(request,'analyse.html',params)
-    elif capitalise =="on":
+        djtext=analysed
+        #return render(request,'analyse.html',params)
+    if capitalise =="on":
         analysed=""
         for char in djtext:
             analysed=analysed+char.upper()
         params={'purpose' : 'Changed to Uppercase' , 'analysed_text': analysed}
-        return render(request,'analyse.html',params)
-    elif spaceremove =="on":
+        djtext=analysed
+        #return render(request,'analyse.html',params)
+    if spaceremove =="on":
         analysed=""
         for index,char in enumerate(djtext):
-            if not(djtext[index]==" " and djtext[index+1]==" 00"):
+            if not(djtext[index]==" " and djtext[index+1]==" "):
                 analysed=analysed+char;
         params={'purpose' : 'Removes Blankspace' , 'analysed_text': analysed}
-        return render(request,'analyse.html',params)
-    elif newlineremover =="on":
+        djtext = analysed
+        #return render(request,'analyse.html',params)
+    if newlineremover =="on":
         analysed=""
         for char in djtext:
-            if char!="\n":
+            if char!="\n" and char!="\r":
                 analysed=analysed+char;
         params={'purpose' : 'Combines String in a Single Line' , 'analysed_text': analysed}
+        djtext = analysed
         return render(request,'analyse.html',params)
-    elif charcount =="on":
+    if charcount =="on":
         c: int=0;
         d: int=0;
         for char in djtext:
@@ -52,6 +56,7 @@ def analyse(request):
             if char==' ':
                 d=d+1;
         params={'purpose' : 'Counts Total Characters' , 'analysed_text': (c-d)}
-        return render(request,'analyse.html',params)
-    else:
-        return HttpResponse("Error")
+        #return render(request,'analyse.html',params)
+    if removepunc!="on" and capitalise != "on" and spaceremove !="on" and newlineremover !="on" and charcount !="on":
+        return HttpResponse("Error! Please select atleast one option.")
+    return render(request, 'analyse.html', params)
