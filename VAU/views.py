@@ -48,13 +48,13 @@ def analyse(request):
         djtext = analysed
         return render(request,'analyse.html',params)
     if charcount =="on":
-        c: int=0;
-        d: int=0;
+        c: int=0
+        d: int=0
         for char in djtext:
             if char!='''!@#$%^&*()_[{}]\|;':",./<>?`~  ''' :
-                c=c+1;
+                c=c+1
             if char==' ':
-                d=d+1;
+                d=d+1
         params={'purpose' : 'Counts Total Characters' , 'analysed_text': (c-d)}
         #return render(request,'analyse.html',params)
     if removepunc!="on" and capitalise != "on" and spaceremove !="on" and newlineremover !="on" and charcount !="on":
